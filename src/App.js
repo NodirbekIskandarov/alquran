@@ -1,24 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-
+import '././style/style.scss';
+import Home from './components/home/Home';
+import Navbar from './components/navbar/Navbar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import Surahs from './components/surahs/Surahs';
+import Players from './components/players/Players';
+import Prayers from './components/prayers/Prayers';
+import Ayahs from './components/surahs/ayahs/Ayahs';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Navbar/>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/surahs' element={<Surahs/>}/>
+        <Route path={`/surahs/:id`} element={<Ayahs/>}/>
+        <Route path='/players' element={<Players/>}/>
+        <Route path='/prayers' element={<Prayers/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
