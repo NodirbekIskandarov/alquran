@@ -38,7 +38,7 @@ function Ayahs() {
   useEffect(() => {
     getData();
     getData1(pk.id);
-  }, []);
+  }, [pk.id]);
 
   return (
     <div className="main">

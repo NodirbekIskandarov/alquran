@@ -58,7 +58,7 @@ function Prayers() {
 
   useEffect(() => {
     getData(selected);
-  }, []);
+  }, [selected]);
   
   return (
     <div className="prayers">
