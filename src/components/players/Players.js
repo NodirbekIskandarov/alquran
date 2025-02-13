@@ -8,6 +8,7 @@ function Players() {
   const [data, setData] = useState([]);
   const [data1, setData1] = useState([]);
   const [data2, setData2] = useState([]);
+  const [loading, setLoading] = useState(false)
 
 
 
@@ -15,6 +16,7 @@ function Players() {
   const leftS = useRef(null);
 
   function changeColor(index) {
+    setLoading(true)
     setSelected(index);
     getData1(index);
     // getData2(index)
@@ -24,25 +26,28 @@ function Players() {
     getData2(index2);
   }
   function getData() {
+    setLoading(true)
     axios
       .get(FULL_SURAHS)
       .then((res) => {
         setData(res.data.data.surahs);
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err, "err");
+        setLoading(false)
         return err;
       });
   }
   function getData1(a) {
-    console.log(a);
     axios
       .get(`https://api.alquran.cloud/v1/surah/${a + 1}/uz.sodik`)
       .then((res) => {
         setData1(res.data.data);
-        console.log(res.data);
+        setLoading(false)
       })
       .catch((err) => {
+        setLoading(false)
         return err;
       });
     if (leftS.current) {
@@ -50,14 +55,16 @@ function Players() {
     }
   }
   function getData2(index) {
+    setLoading(true)
     axios
       .get(AYAHS_AUDIO)
       .then((res) => {
         setData2(res.data.data.surahs[selected].ayahs[index]);
-        console.log(res.data.data.surahs[selected].ayahs[index]);
+        setLoading(false)
       })
       .catch((err) => {
         console.log("err");
+        setLoading(false)
         return err;
       });
   }
@@ -72,22 +79,24 @@ function Players() {
       <div className="container">
         <div className="players">
           <div className="left">
-            <div className="leftS" ref={leftS}>
-              {data1.ayahs &&
-                data1.ayahs.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="box"
-                      onClick={() => playFunc(index)}
-                    >
-                      <p className="first">{data1.number}</p>
-                      <p className="second">{data1.name}</p>
-                      <p className="third">{item.text}</p>
-                    </div>
-                  );
-                })}
-            </div>
+            {loading ? (<p>Loading...</p>) : (
+              <div className="leftS" ref={leftS}>
+                {data1.ayahs &&
+                  data1.ayahs.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="box"
+                        onClick={() => playFunc(index)}
+                      >
+                        <p className="first">{data1.number}</p>
+                        <p className="second">{data1.name}</p>
+                        <p className="third">{item.text}</p>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
             <div className="leftA">
               <AudioPlayer
                 autoPlay={false}
